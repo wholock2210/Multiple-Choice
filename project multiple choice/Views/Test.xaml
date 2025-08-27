@@ -125,10 +125,14 @@
                TextAlignment="Center"/>
 
                     </StackPanel>
-                    <Button VerticalAlignment="Bottom"
-                            Margin="10"
-                            Name="btnConfirm"
-                            Command="{Binding DataContext.HomeCommand, RelativeSource={RelativeSource AncestorType=Window}}">Hẹ Hẹ Hẹ</Button>
+                    <WrapPanel VerticalAlignment="Bottom">
+                        <Button 
+         Margin="10"
+         Name="btnConfirm"
+         Command="{Binding DataContext.HomeCommand, RelativeSource={RelativeSource AncestorType=Window}}">Hẹ Hẹ Hẹ</Button>
+                        <Button Name="btnWatchAwser"
+                                Click="btnWatchAwser_Click">xem đáp án</Button>
+                    </WrapPanel>
                 </Grid>
             </Border>
         </Grid>

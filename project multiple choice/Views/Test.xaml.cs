@@ -25,6 +25,7 @@ namespace project_multiple_choice.Views
         PartQuestion CurrentPart;
         private Dictionary<Question, Answer> selectedAnswers = new Dictionary<Question, Answer>();
         private Dictionary<PartQuestion, Dictionary<Question, Answer>> partQuestion = new Dictionary<PartQuestion, Dictionary<Question, Answer>>();
+        bool IsDone = false;
         public Test()
         {
             InitializeComponent();
@@ -62,7 +63,10 @@ namespace project_multiple_choice.Views
         {
             CurrentPart = part;
             AddQuestionNumber(CurrentPart);
-            AddMainQuestion(CurrentPart);
+            if (IsDone)
+                AddMainQuestionAfterDone(CurrentPart);
+            else
+                AddMainQuestion(CurrentPart);
         }
         private void AddQuestionNumber(PartQuestion cpart)
         {
@@ -138,6 +142,72 @@ namespace project_multiple_choice.Views
                 }
             }
         }
+        private void AddMainQuestionAfterDone(PartQuestion cPart)
+        {
+            spMainQuestion.Children.Clear();
+            foreach (var question in cPart.Questions)
+            {
+                Border border = new Border();
+                spMainQuestion.Children.Add(border);
+
+                StackPanel stackPanel = new StackPanel();
+                border.Child = stackPanel;
+
+                TextBlock numQuestion = new TextBlock
+                {
+                    Text = $"Câu {question.QuestionNumber} (1 đáp án)",
+                    FontSize = 12
+                };
+                stackPanel.Children.Add(numQuestion);
+
+                TextBlock contentQuestion = new TextBlock
+                {
+                    Text = question.Content,
+                    FontSize = 16,
+                    FontWeight = FontWeights.SemiBold
+                };
+                stackPanel.Children.Add(contentQuestion);
+
+                Answer selectedAnswer = null;
+                if (partQuestion.ContainsKey(cPart) && partQuestion[cPart].ContainsKey(question))
+                    selectedAnswer = partQuestion[cPart][question];
+
+                foreach (var answer in question.Answers)
+                {
+                    TextBlock textBlock = new TextBlock
+                    {
+                        Text = answer.Content,
+                        FontWeight = FontWeights.Bold
+                    };
+
+                    RadioButton radioButton = new RadioButton
+                    {
+                        Content = textBlock,
+                        Margin = new Thickness(0, 10, 0, 0),
+                        GroupName = $"Question{question.QuestionNumber}",
+                        Tag = new { Question = question, Answer = answer },
+                    };
+                    radioButton.IsHitTestVisible = false;
+
+                    if (selectedAnswer == answer)
+                    {
+                        radioButton.IsChecked = true;
+                        if (answer.IsCorrect)
+                            textBlock.Foreground = Brushes.Green;
+
+                        else
+                            textBlock.Foreground = Brushes.Red;
+                    }
+                    else if (answer.IsCorrect)
+                    {
+                        textBlock.Foreground = Brushes.Green;
+                    }
+
+                    stackPanel.Children.Add(radioButton);
+                }
+            }
+        }
+
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
@@ -168,5 +238,11 @@ namespace project_multiple_choice.Views
             congratulations.Visibility = Visibility.Visible;
         }
 
+        private void btnWatchAwser_Click(object sender, RoutedEventArgs e)
+        {
+            IsDone = true;
+            AddMainQuestionAfterDone(CurrentPart);
+            congratulations.Visibility = Visibility.Collapsed;
+        }
     }
 }
