@@ -189,7 +189,9 @@
                                         BorderBrush="#FFFFEEFA"
                                         Foreground="#FFF0689E"
                                         Margin="10 0"
-                                        Height="40">
+                                        Height="40"
+                                        Name="btnGetUpdate"
+                                        Click="btnGetUpdate_Click">
                                     <WrapPanel HorizontalAlignment="Center">
                                         <materialDesign:PackIcon Kind="GiftOutline" Width="25" Height="25"/>
                                         <TextBlock Text="Get new update" VerticalAlignment="Center"

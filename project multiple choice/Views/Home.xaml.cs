@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,17 @@ namespace project_multiple_choice.Views
             //this.Width = 900;
             //this.Height = 600;
             //MessageBox.Show(this.Width.ToString());
+        }
+
+        private void btnGetUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            string url = "https://github.com/wholock2210/Multiple-Choice";
+            var psi = new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            };
+            Process.Start(psi);
         }
     }
 }
