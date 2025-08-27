@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="project_multiple_choice.Views.ChooseExam"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:project_multiple_choice.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:gif="http://wpfanimatedgif.codeplex.com"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900"
+             Style="{StaticResource Page_Style}">
+    <Grid>
+        <Border Background="#f7f6f9" 
+                CornerRadius="0,20,20,0"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ListView ItemsSource="{Binding Exams}"
+                      SelectedItem="{Binding SelectedExam}"
+                      Margin="30 50 30 0"
+                      Name="lvChooseExam">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Tên đề" DisplayMemberBinding="{Binding ExamInfo.Name}" />
+                        <GridViewColumn Header="Tác giả" DisplayMemberBinding="{Binding ExamInfo.Author}" />
+                        <GridViewColumn Header="Số phần" DisplayMemberBinding="{Binding Parts.Count}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Grid Grid.Column="1">
+                <Border Background="White"
+                        CornerRadius="15"
+                        Margin="20 50 20 0">
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                        <Grid>
+                            <StackPanel Margin="20 30 20 0">
+                                <TextBlock Text="{Binding SelectedExam.ExamInfo.Name}"
+                                           TextWrapping="WrapWithOverflow"
+                                           FontSize="30"
+                                           TextAlignment="Center"
+                                           FontWeight="Bold"
+                                           Name="tblName"/>
+                                <TextBlock Text="{Binding SelectedExam.ExamInfo.Author, StringFormat='Tên tác giả: {0}'}"
+                                           Margin="0 10 0 0"
+                                           FontSize="20"
+                                           FontWeight="SemiBold"
+                                           Name="tblNameAuthor"
+                                           TextWrapping="WrapWithOverflow"/>
+                                <TextBlock Text="{Binding SelectedExam.Parts.Count, StringFormat='Số phần: {0}'}"
+                                           Margin="0 10 0 0"
+                                           FontSize="20"
+                                           FontWeight="SemiBold"
+                                           Name="tblCoutPart"
+                                           TextWrapping="WrapWithOverflow"/>
+                                <TextBlock Text="{Binding SelectedExam.ExamInfo.CreatedDate, StringFormat='Ngày tạo: {0}'}"
+                                           Margin="0 10 0 0"
+                                           FontSize="20"
+                                           FontWeight="SemiBold"
+                                           Name="tblDayCreated"
+                                           TextWrapping="WrapWithOverflow"/>
+                                <TextBlock Text="nội dung"
+                                           Margin="0 10 0 0"
+                                           FontSize="20"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding SelectedExam.ExamInfo.Description}"
+                                           Margin="0 20 0 0"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="WrapWithOverflow"
+                                           Name="tblInfo"
+                                           TextAlignment="Center"/>
+                            </StackPanel>
+                            <Button VerticalAlignment="Top"
+                                    HorizontalAlignment="Center"
+                                    Margin="0,498,0,0" Width="146"
+                                    Command="{Binding DataContext.TestCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding SelectedExam}" >
+                                Thi thử
+                            </Button>
+                        </Grid>
+                    </ScrollViewer>
+
+                </Border>
+            </Grid>
+            <Grid Name="Empty" Grid.Column="1">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=lvChooseExam, Path=SelectedItem}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Border Margin="10 50 10 0" Background="White"
+            CornerRadius="15 15 0 0">
+                    <Grid>
+                        <TextBlock Text="Hãy chọn vào danh sách đề thi bên trái để xem chi tiết"
+                       FontSize="25"
+                       FontWeight="SemiBold"
+                       TextWrapping="WrapWithOverflow"
+                       TextAlignment="Center"
+                       Margin="20 30"/>
+                        <Image gif:ImageBehavior.AnimatedSource="/Resources/empty.gif"
+                   Stretch="Uniform"
+                   Height="200"
+                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <materialDesign:Card Margin="0,0,0,30"
+                                Padding="5"
+                                UniformCornerRadius="20"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Bottom">
+                            <WrapPanel Margin="10">
+                                <materialDesign:PackIcon Kind="HandPeace"
+                     Foreground="#FFC83D"
+                     VerticalAlignment="Center"
+                     Margin="10 0"/>
+                                <TextBlock Margin="10 0" VerticalAlignment="Center">
+                                    <TextBlock.Inlines>
+                                        <Run Text="Say hi to"/>
+                                        <Run Text="WhoLock"
+                                 FontWeight="SemiBold"
+                                 FontSize="14"/>
+                                    </TextBlock.Inlines>
+                                </TextBlock>
+                            </WrapPanel>
+                        </materialDesign:Card>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

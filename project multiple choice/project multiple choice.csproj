@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>project_multiple_choice</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\deniednew.gif" />
+    <None Remove="Resources\exit.png" />
+    <None Remove="Resources\good.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\cartoon-woman-pretty.png" />
+    <Resource Include="Images\c_editor.png" />
+    <Resource Include="Images\c_text.png" />
+    <Content Include="Resources\check.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\dashboard.png" />
+    <Resource Include="Resources\denied.gif" />
+    <Resource Include="Resources\deniednew.gif" />
+    <Resource Include="Resources\empty.gif" />
+    <Resource Include="Resources\exit.png" />
+    <Resource Include="Resources\good.png" />
+    <Resource Include="Resources\home.png" />
+    <Resource Include="Resources\info.png" />
+    <Resource Include="Resources\redshutdown.png" />
+    <Resource Include="Resources\setting.png" />
+    <Resource Include="Resources\shutdownpng.png" />
+    <Content Include="Resources\wrong.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

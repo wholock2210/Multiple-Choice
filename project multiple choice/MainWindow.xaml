@@ -1,0 +1,83 @@
+﻿<Window x:Class="project_multiple_choice.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:project_multiple_choice"
+        xmlns:ViewModel="clr-namespace:project_multiple_choice.ViewModels"
+        xmlns:menu="clr-namespace:project_multiple_choice.Utilities"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="680" Width="1208" WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="{x:Null}"
+        AllowsTransparency="True">
+    <Window.DataContext>
+        <ViewModel:MainViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <BitmapImage x:Key="IHome" UriSource="Resources\home.png"/>
+        <BitmapImage x:Key="IInfo" UriSource="Resources\info.png"/>
+        <BitmapImage x:Key="ISetting" UriSource="Resources\setting.png"/>
+        <BitmapImage x:Key="IDashboard" UriSource="Resources\dashboard.png"/>
+    </Window.Resources>
+    <Grid>
+        <Border Background="White" Margin="20" CornerRadius="20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="9*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.RowSpan="2"
+                      Background="White"
+                      CornerRadius="20,20,20,20"/>
+
+                <StackPanel Grid.RowSpan="2"
+                            Margin="0,100,0,100">
+                    <!-- Dashboard -->
+                    <menu:Btn Style="{StaticResource btnStyle}"
+                              Command="{Binding DashboardCommand}">
+                        <Grid>
+                            <Image Source="{StaticResource IDashboard}"/>
+                        </Grid>
+                    </menu:Btn>
+                    <!-- Home -->
+                    <menu:Btn Style="{StaticResource btnStyle}"
+                              IsChecked="true"
+                              Command="{Binding HomeCommand}">
+                        <Grid>
+                            <Image Source="{StaticResource IHome}"/>
+                        </Grid>
+                    </menu:Btn>
+                    <!-- Settings -->
+                    <menu:Btn Style="{StaticResource btnStyle}"
+                              Command="{Binding SettingCommand}">
+                        <Grid>
+                            <Image Source="{StaticResource ISetting}"/>
+                        </Grid>
+                    </menu:Btn>
+                    <!-- Info -->
+                    <menu:Btn Style="{StaticResource btnStyle}"
+                              Command="{Binding InfoCommand}">
+                        <Grid>
+                            <Image Source="{StaticResource IInfo}"/>
+                        </Grid>
+                    </menu:Btn>
+                </StackPanel>
+                <Border Grid.Column="1"
+                      Grid.Row="1"
+                      Background="#f7f6f9"
+                        CornerRadius="0 20 20 0">
+                    <ContentControl x:Name="Pages"
+                    Content="{Binding CurrentView}"/>
+                </Border>
+                <Grid Grid.Column="1">
+                    <Button Name="Shutdown" VerticalAlignment="Top"
+                            Margin="0,10,10,0"
+                        Style="{StaticResource ShutdownButtonStyle}"
+                        Command="{Binding ShutDownCommand}" Height="40" Width="40"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
