@@ -215,19 +215,22 @@ namespace project_multiple_choice.Views
             int totalCount = 0;
             foreach (var part in exam.Parts)
             {
-                if (partQuestion.ContainsKey(part))
+                foreach (var question in part.Questions) 
                 {
-                    var answers = partQuestion[part];
-                    foreach (var qa in answers)
+                    totalCount++; 
+
+                    Answer selectedAnswer = null;
+
+                    if (partQuestion.ContainsKey(part) && partQuestion[part].ContainsKey(question))
                     {
-                        totalCount++;
-                        var question = qa.Key;
-                        var selectedAnswer = qa.Value;
-                        var correctAnswer = question.Answers.FirstOrDefault(a => a.IsCorrect);
-                        if(correctAnswer != null && selectedAnswer == correctAnswer)
-                        {
-                            correctCount++;
-                        }
+                        selectedAnswer = partQuestion[part][question];
+                    }
+
+                    var correctAnswer = question.Answers.FirstOrDefault(a => a.IsCorrect);
+
+                    if (selectedAnswer != null && selectedAnswer == correctAnswer)
+                    {
+                        correctCount++;
                     }
                 }
             }
