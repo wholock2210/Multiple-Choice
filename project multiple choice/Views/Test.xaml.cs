@@ -26,6 +26,7 @@ namespace project_multiple_choice.Views
         private Dictionary<Question, Answer> selectedAnswers = new Dictionary<Question, Answer>();
         private Dictionary<PartQuestion, Dictionary<Question, Answer>> partQuestion = new Dictionary<PartQuestion, Dictionary<Question, Answer>>();
         bool IsDone = false;
+        bool IsRandom = false;
         public Test()
         {
             InitializeComponent();
@@ -39,7 +40,17 @@ namespace project_multiple_choice.Views
             }
             AddPart();
             AddQuestionNumber(CurrentPart);
-            AddMainQuestion(CurrentPart);
+
+            var vm1 = this.DataContext as ViewModels.TestVM;
+            IsRandom = vm1.RandomizeQuestions;
+            if (IsRandom)
+            {
+                AddMainQuestionRandom(CurrentPart);
+            }
+            else
+            {
+                AddMainQuestion(CurrentPart);
+            }
         }
         private void AddPart()
         {
@@ -66,7 +77,20 @@ namespace project_multiple_choice.Views
             if (IsDone)
                 AddMainQuestionAfterDone(CurrentPart);
             else
-                AddMainQuestion(CurrentPart);
+            {
+                var vm = this.DataContext as ViewModels.TestVM;
+                IsRandom = vm.RandomizeQuestions;
+                if (IsRandom)
+                {
+                    MessageBox.Show("random câu hỏi: " + IsRandom);
+                    AddMainQuestionRandom(CurrentPart);
+                }
+                else
+                {
+                    AddMainQuestion(CurrentPart);
+                } 
+            }
+                
         }
         private void AddQuestionNumber(PartQuestion cpart)
         {
@@ -142,6 +166,86 @@ namespace project_multiple_choice.Views
                 }
             }
         }
+
+        private void AddMainQuestionRandom(PartQuestion cPart)
+        {
+            spMainQuestion.Children.Clear();
+
+            int index = 1;
+
+            foreach (var question in cPart.Questions.OrderBy(q => Guid.NewGuid()))
+            {
+                Border border = new Border();
+                spMainQuestion.Children.Add(border);
+
+                StackPanel stackPanel = new StackPanel();
+                border.Child = stackPanel;
+
+                TextBlock numQuestion = new TextBlock
+                {
+                    Text = $"Câu {index} (1 đáp án)",
+                    FontSize = 12
+                };
+                index++;
+                stackPanel.Children.Add(numQuestion);
+
+                TextBlock contentQuestion = new TextBlock
+                {
+                    Text = question.Content,
+                    FontSize = 16,
+                    FontWeight = FontWeights.SemiBold
+                };
+                stackPanel.Children.Add(contentQuestion);
+
+                var shuffledAnswers = question.Answers.OrderBy(a => Guid.NewGuid()).ToList();
+
+                for (int i = 0; i < shuffledAnswers.Count; i++)
+                {
+                    var answer = shuffledAnswers[i];
+
+                    string cleanText = answer.Content;
+                    if (cleanText.Length > 2 && cleanText[1] == '.')
+                    {
+                        cleanText = cleanText.Substring(2).Trim();
+                    }
+
+                    TextBlock textBlock = new TextBlock
+                    {
+                        Text = cleanText
+                    };
+
+                    RadioButton radioButton = new RadioButton
+                    {
+                        Content = textBlock,
+                        Margin = new Thickness(0, 10, 0, 0),
+                        GroupName = $"Question{question.QuestionNumber}",
+                        Tag = new { Question = question, Answer = answer }
+                    };
+
+                    radioButton.Checked += (s, e) =>
+                    {
+                        var rb = s as RadioButton;
+                        dynamic data = rb.Tag;
+
+                        if (!partQuestion.ContainsKey(cPart))
+                            partQuestion[cPart] = new Dictionary<Question, Answer>();
+
+                        partQuestion[cPart][data.Question] = data.Answer;
+                    };
+
+                    if (partQuestion.ContainsKey(cPart) && partQuestion[cPart].ContainsKey(question))
+                    {
+                        if (partQuestion[cPart][question] == answer)
+                        {
+                            radioButton.IsChecked = true;
+                        }
+                    }
+
+                    stackPanel.Children.Add(radioButton);
+                }
+            }
+        }
+
         private void AddMainQuestionAfterDone(PartQuestion cPart)
         {
             spMainQuestion.Children.Clear();

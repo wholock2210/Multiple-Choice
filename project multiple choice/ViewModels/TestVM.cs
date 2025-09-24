@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace project_multiple_choice.ViewModels
 {
@@ -16,9 +17,17 @@ namespace project_multiple_choice.ViewModels
             get => exam;
             set { exam = value; OnPropertyChanged(); }
         }
-        public TestVM(ExamPackage obj)
+        private bool randomizeQuestions;
+        public bool RandomizeQuestions
+        {
+            get => randomizeQuestions;
+            set { randomizeQuestions = value; OnPropertyChanged(); }
+        }
+        public TestVM(ExamPackage obj,bool random)
         {
             Exam = obj;
+            randomizeQuestions = random;
+            
         }   
     }
 }

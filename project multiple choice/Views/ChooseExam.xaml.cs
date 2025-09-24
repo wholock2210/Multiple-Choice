@@ -29,5 +29,10 @@ namespace project_multiple_choice.Views
         {
             Empty.Visibility = Visibility.Collapsed;
         }
+
+        private void btnConfirm_Click(object sender, RoutedEventArgs e)
+        {
+            option.Visibility = Visibility.Visible;
+        }
     }
 }

@@ -26,10 +26,10 @@ namespace project_multiple_choice.ViewModels
             get => selectedExam;
             set { selectedExam = value; OnPropertyChanged(); }
         }
+
         public ChooseExamVM()
         {
             LoadExams();
-            
         }
 
 

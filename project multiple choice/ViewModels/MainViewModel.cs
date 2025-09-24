@@ -55,11 +55,10 @@ namespace project_multiple_choice.ViewModels
 
         private void Test(object obj)
         {
-            if(obj is ExamPackage exam)
+            if (obj is object[] arr && arr[0] is ExamPackage exam && arr[1] is bool random)
             {
-                CurrentView = new TestVM(exam);
+                CurrentView = new TestVM(exam, random);
             }
-            
         }
 
     }
